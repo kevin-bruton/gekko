@@ -23,10 +23,10 @@ var util = {
       return _config;
 
     if(!program.config)
-        util.die('Please specify a config file.', true);
+      program.config = 'config.js';
 
     if(!fs.existsSync(util.dirs().gekko + program.config))
-      util.die('Cannot find the specified config file.', true);
+      util.die(`Cannot find the specified config file "${program.config}".`, true);
 
     _config = require(util.dirs().gekko + program.config);
     return _config;
