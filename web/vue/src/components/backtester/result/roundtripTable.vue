@@ -23,6 +23,18 @@
           template(v-else)
             td.profit {{ rt.pnl.toFixed(2) }}
             td.profit {{ rt.profit.toFixed(2) }}%
+        tr
+          td
+          td
+          td
+          td
+          td Totals:
+          template(v-if="Math.sign(total(roundtrips, pnl))===-1")
+            td.loss {{ total(roundtrips, 'pnl').toFixed(2) }}
+            td.loss {{ total(roundtrips, 'profit').toFixed(2) }}%
+          template(v-else)
+            td.profit {{ total(roundtrips, 'pnl').toFixed(2) }}
+            td.profit {{ total(roundtrips, 'profit').toFixed(2) }}%
     div(v-if='!roundtrips.length')
       p Not enough data to display
 </template>
@@ -56,6 +68,7 @@ export default {
       return mom.utc().format('YYYY-MM-DD HH:mm');
     },
     round: n => (+n).toFixed(3),
+    total: (arr, prop) => arr.reduce((acc, cur) => acc + cur[prop], 0)
   },
 }
 </script>
