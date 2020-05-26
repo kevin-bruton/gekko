@@ -1,4 +1,4 @@
-<template lang='pug'>
+<template lang='pug' v-if="report">
 div.contain
 
   .grd-row.summary
@@ -23,8 +23,7 @@ div.contain
           th market
           td {{ round(report.market) }}%
 
-    paperTradeSummary(:report='report')
-
+    paperTradeSummary(:report='report', :market='report.market')
 </template>
 
 <script>
@@ -38,14 +37,6 @@ export default {
   },
   methods: {
     round: n => (+n).toFixed(5)
-  },
-  computed: {
-    profitClass: function() {
-      if(this.report.relativeProfit > 0)
-        return 'profit'
-      else
-        return 'loss'
-    }
   }
 }
 </script>

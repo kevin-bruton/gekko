@@ -14,26 +14,32 @@
       th final balance
       td {{ round(report.balance) }} {{ report.currency }}
     tr
+      th alpha
+      td.price(:class='alphaClass') {{ (report.relativeProfit - market).toFixed(2) }}%
+    tr
       th simulated profit
 
-  .big.txt--right.price(:class='profitClass') {{ round(report.relativeProfit) }}%
+  .big.txt--right.price(:class='profitClass') {{ report.relativeProfit.toFixed(2) }}%
 
 </template>
 
 <script>
 
 export default {
-  props: ['report'],
+  props: ['report', 'market'],
+  mounted: function() {
+    console.log('report:', this.report);
+  },
   methods: {
     round2: n => (+n).toFixed(2),
     round: n => (+n).toFixed(5)
   },
   computed: {
     profitClass: function() {
-      if(this.report.relativeProfit > 0)
-        return 'profit'
-      else
-        return 'loss'
+      return (this.report.relativeProfit > 0) ? 'profit' : 'loss'
+    },
+    alphaClass: function() {
+      return (this.report.relativeProfit - this.market) > 0 ? 'profit' : 'loss'
     }
   }
 }
@@ -54,7 +60,7 @@ export default {
 }
 
 .price.profit {
-  color: #7FFF00;
+  color: rgb(65, 156, 13);
 }
 
 .price.loss {
