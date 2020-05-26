@@ -18,7 +18,7 @@
           td {{ round(rt.entryBalance) }}
           td {{ round(rt.exitBalance) }}
           template(v-if="Math.sign(rt.pnl)===-1")
-            td.loss {{ Math.sign(rt.pnl)*rt.pnl.toFixed(2) }}
+            td.loss {{ rt.pnl.toFixed(2) }}
             td.loss {{ rt.profit.toFixed(2) }}%
           template(v-else)
             td.profit {{ rt.pnl.toFixed(2) }}
@@ -29,12 +29,8 @@
           td
           td
           td Totals:
-          template(v-if="Math.sign(total(roundtrips, pnl))===-1")
-            td.loss {{ total(roundtrips, 'pnl').toFixed(2) }}
-            td.loss {{ total(roundtrips, 'profit').toFixed(2) }}%
-          template(v-else)
-            td.profit {{ total(roundtrips, 'pnl').toFixed(2) }}
-            td.profit {{ total(roundtrips, 'profit').toFixed(2) }}%
+          td(:class='profitClass') {{ totalProfit }}
+          td(:class='profitClass') {{ (totalProfit / roundtrips[0].entryBalance * 100).toFixed(2) }}%
     div(v-if='!roundtrips.length')
       p Not enough data to display
 </template>
@@ -45,7 +41,18 @@ import _ from 'lodash'
 export default {
   props: ['roundtrips'],
   data: () => {
-    return {}
+    return {
+      totalProfit: 0
+    }
+  },
+  mounted: function () {
+    this.totalProfit = this.roundtrips && (this.roundtrips[this.roundtrips.length - 1].exitBalance - this.roundtrips[0].entryBalance).toFixed(2)
+    console.log('totalProfit', this.totalProfit)
+  },
+  computed: {
+    profitClass: function() {
+      return (this.totalProfit >= 0) ? 'profit' : 'loss'
+    }
   },
   methods: {
     diff: n => moment.duration(n).humanize(),
