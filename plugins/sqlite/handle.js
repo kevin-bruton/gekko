@@ -14,7 +14,7 @@ var pluginMock = {
   slug: 'sqlite adapter',
   dependencies: adapter.dependencies,
 };
-debugger
+
 var cannotLoad = pluginHelper.cannotLoad(pluginMock);
 if (cannotLoad) util.die(cannotLoad);
 

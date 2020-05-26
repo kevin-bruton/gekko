@@ -13,7 +13,7 @@ var Indicator = function(config) {
 Indicator.prototype.update = function(price) {
   this.inner.update(price);
   this.outer.update(this.inner.result);
-  this.result = 2 * this.inner.result - this.outer.result;
+  this.result = !!(2 * this.inner.result - this.outer.result);
 }
 
 module.exports = Indicator;
